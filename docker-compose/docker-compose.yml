@@ -1,0 +1,86 @@
+version: "3"
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 192.168.0.0/24
+    external: false
+
+services:
+    # Defining DB Server
+    mysql-db:
+        image: mysql:8
+        container_name: image-mysql
+        restart: always
+        command: --lower_case_table_names=0
+        security_opt:
+            - seccomp:unconfined
+        environment:
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_ROOT_PASSWORD: rootPassword
+            TZ: Europe/Paris
+        volumes:
+            [
+                "/home/ec2-user/aws-docker/docker-storage/mysql-storage:/var/lib/mysql",
+            ]
+        ports:
+            - 3306:3306
+        networks:
+            default:
+               ipv4_address: 192.168.0.2
+
+    # Defining Web Server
+    tomcat-main:
+        image: tomcat:8-jdk8
+        container_name: image-tomcat-main
+        restart: always
+        ports:
+            - 8080:8080
+        environment:
+            CATALINA_OPTS: "-server -XX:InitiatingHeapOccupancyPercent=70"
+        volumes:
+            [
+                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/conf/Catalina/localhost:/usr/local/tomcat/conf/Catalina/localhost",
+                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/conf/catalina.properties:/usr/local/tomcat/conf/catalina.properties",
+                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/conf/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml",
+                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/apps-repo:/usr/local/tomcat/apps-repo",
+                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/webapps:/usr/local/tomcat/webapps",
+                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/lib-local:/usr/local/tomcat/lib-local",
+                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/etc:/usr/local/tomcat/etc",
+                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/logs:/usr/local/tomcat/logs",
+                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/storage:/usr/local/tomcat/storage",
+                "/home/ec2-user/aws-docker/docker-data:/usr/local/tomcat/data",
+            ]
+        networks:
+            default:
+               ipv4_address: 192.168.0.3
+
+    # Defining Nginx + cerbot
+    nginx: 
+        image: nginx:latest
+        container_name: image-nginx
+        restart: always
+        volumes:
+            [
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/conf:/etc/nginx/conf.d",
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/logs:/var/log/nginx",
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/html:/var/www/default",
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/letsencrypt:/etc/letsencrypt",
+            ]
+        ports:
+            - 80:80
+            - 443:443
+        networks:
+            default:
+               ipv4_address: 192.168.0.4
+
+
+    #certbot:
+    #    image: certbot/certbot
+    #    container_name: imagage-certbot
+    #    command: certonly --webroot --webroot-path=/var/www/default --email eddy.acthergal@ext.europarl.europa.eu --agree-tos --non-interactive --no-eff-email --force-renewal -d eacthergal.online
+    #    volumes: [
+    #        "/home/ec2-user/aws-docker/docker-storage/nginx-storage/html:/var/www/default",
+    #        "/home/ec2-user/aws-docker/docker-storage/nginx-storage/letsencrypt:/etc/letsencrypt",
+    #    ]  
