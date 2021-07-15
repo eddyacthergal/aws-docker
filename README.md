@@ -1,4 +1,4 @@
-# aws-docker: Docker Configuration for EC2 (AWS)
+# Docker Configuration for EC2 (AWS)
 
 Amazon changed the install in Linux 2. One no-longer using 'yum'
 See: https://aws.amazon.com/amazon-linux-2/release-notes/
