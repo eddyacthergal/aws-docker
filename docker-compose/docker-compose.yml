@@ -38,7 +38,11 @@ services:
         ports:
             - 8080:8080
         environment:
-            CATALINA_OPTS: "-server -XX:InitiatingHeapOccupancyPercent=70"
+            CATALINA_OPTS: "-server \
+              -Xms256m -Xmx1024m -XX:PermSize=256m \
+              -XX:+UseG1GC \
+              -XX:InitiatingHeapOccupancyPercent=70 \
+              -Djava.security.auth.login.config=/usr/local/tomcat/etc/jaas.config"
         volumes:
             [
                 "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/conf/Catalina/localhost:/usr/local/tomcat/conf/Catalina/localhost",
