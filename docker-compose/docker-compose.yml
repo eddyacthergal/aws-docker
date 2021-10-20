@@ -36,7 +36,7 @@ services:
         container_name: container-apache
         restart: always
         ports:
-            - 80:80
+            - 8081:80
         volumes:
             [
               "/home/ec2-user/aws-docker/docker-storage/apache-storage/conf:/usr/local/apache2/conf/sites-enabled",
@@ -77,23 +77,22 @@ services:
                ipv4_address: 192.168.0.4
 
     # Defining Nginx + cerbot
-    #nginx: 
-    #    image: nginx:latest
-    #    container_name: container-nginx
-    #    restart: always
-    #    volumes:
-    #        [
-    #            "/home/ec2-user/aws-docker/docker-storage/nginx-storage/conf:/etc/nginx/conf.d",
-    #            "/home/ec2-user/aws-docker/docker-storage/nginx-storage/logs:/var/log/nginx",
-    #            "/home/ec2-user/aws-docker/docker-storage/nginx-storage/html:/var/www/default",
-    #            "/home/ec2-user/aws-docker/docker-storage/nginx-storage/letsencrypt:/etc/letsencrypt",
-    #        ]
-    #    ports:
-    #        - 80:80
-    #        - 443:443
-    #    networks:
-    #        default:
-    #           ipv4_address: 192.168.0.5
+    nginx: 
+        image: nginx:latest
+        container_name: container-nginx
+        restart: always
+        volumes:
+            [
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/conf:/etc/nginx/conf.d",
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/logs:/var/log/nginx",
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/html:/var/www/default",
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/letsencrypt:/etc/letsencrypt",
+            ]
+        ports:
+            - 80:80
+        networks:
+            default:
+               ipv4_address: 192.168.0.5
 
 
     #certbot:
