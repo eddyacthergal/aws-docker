@@ -1,6 +1,6 @@
 ## Tomcat: Apps, Apps Properties, Deployed Apps
 **/apps-repo/*
-**/webapps/**/*
+**/webapps/*/**
 **/Catalina/localhost/*
 **/etc/application-*
 
