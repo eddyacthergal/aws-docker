@@ -1,5 +1,6 @@
 ## Apache Server
 **/www/*/**
+**/apache-storage/conf/**
 
 ## Apache Tomcat: Apps, Apps Properties, Deployed Apps
 **/apps-repo/*
