@@ -1,0 +1,11 @@
+## Tomcat: Apps, Apps Properties, Deployed Apps
+**/apps-repo/*
+**/webapps/**/*
+**/Catalina/localhost/*
+**/etc/application-*
+
+## Application data
+**/docker-data/**/*
+
+## Application Logs
+**/logs/*
