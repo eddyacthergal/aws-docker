@@ -1,4 +1,7 @@
-## Tomcat: Apps, Apps Properties, Deployed Apps
+## Apache Server
+**/www/*/**
+
+## Apache Tomcat: Apps, Apps Properties, Deployed Apps
 **/apps-repo/*
 **/webapps/*/**
 **/Catalina/localhost/*
