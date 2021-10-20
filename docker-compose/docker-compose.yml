@@ -37,6 +37,10 @@ services:
         restart: always
         ports:
             - 80:80
+        volumes:
+            [
+              "/home/ec2-user/aws-docker/docker-storage/apache-storage/conf:/usr/local/apache2/conf",
+            ]
         networks:
             default:
                ipv4_address: 192.168.0.3
