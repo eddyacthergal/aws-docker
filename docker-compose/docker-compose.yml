@@ -39,7 +39,8 @@ services:
             - 80:80
         volumes:
             [
-              "/home/ec2-user/aws-docker/docker-storage/apache-storage/conf:/usr/local/apache2/conf/sites",
+              "/home/ec2-user/aws-docker/docker-storage/apache-storage/conf:/usr/local/apache2/conf/sites-enabled",
+              "/home/ec2-user/aws-docker/docker-storage/apache-storage/www:/var/www"
             ]
         networks:
             default:
