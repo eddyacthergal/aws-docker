@@ -12,7 +12,7 @@
 
 ## Nginx server
 **/nginx-storage/conf/**
-**/nginx-storage/html/**
+**/nginx-storage/html/**/**
 
 ## Others
 **/.project
