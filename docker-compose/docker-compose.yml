@@ -30,22 +30,23 @@ services:
             default:
                ipv4_address: 192.168.0.2
 
-    # Defining Apache Web Server
-    apache-main:
-        image: httpd:2
-        container_name: container-apache
+    # Defining Nginx
+    nginx: 
+        image: nginx:latest
+        container_name: container-nginx
         restart: always
-        ports:
-            - 8081:80
         volumes:
             [
-              "/home/ec2-user/aws-docker/docker-storage/apache-storage/conf:/usr/local/apache2/conf/sites-enabled",
-              "/home/ec2-user/aws-docker/docker-storage/apache-storage/www:/usr/local/apache2/htdocs",
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/conf:/etc/nginx/conf.d",
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/logs:/var/log/nginx",
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/html:/var/www/default"
             ]
+        ports:
+            - 80:80
         networks:
             default:
                ipv4_address: 192.168.0.3
-
+               
     # Defining Tomcat Web Server
     tomcat-main:
         image: tomcat:8-jdk8
@@ -75,31 +76,3 @@ services:
         networks:
             default:
                ipv4_address: 192.168.0.4
-
-    # Defining Nginx + cerbot
-    nginx: 
-        image: nginx:latest
-        container_name: container-nginx
-        restart: always
-        volumes:
-            [
-                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/conf:/etc/nginx/conf.d",
-                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/logs:/var/log/nginx",
-                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/html:/var/www/default",
-                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/letsencrypt:/etc/letsencrypt",
-            ]
-        ports:
-            - 80:80
-        networks:
-            default:
-               ipv4_address: 192.168.0.5
-
-
-    #certbot:
-    #    image: certbot/certbot
-    #    container_name: imagage-certbot
-    #    command: certonly --webroot --webroot-path=/var/www/default --email eddy.acthergal@ext.europarl.europa.eu --agree-tos --non-interactive --no-eff-email --force-renewal -d eacthergal.online
-    #    volumes: [
-    #        "/home/ec2-user/aws-docker/docker-storage/nginx-storage/html:/var/www/default",
-    #        "/home/ec2-user/aws-docker/docker-storage/nginx-storage/letsencrypt:/etc/letsencrypt",
-    #    ]  
