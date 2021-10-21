@@ -1,7 +1,3 @@
-## Apache Server
-**/www/*/**
-**/apache-storage/conf/**
-
 ## Apache Tomcat: Apps, Apps Properties, Deployed Apps
 **/apps-repo/*
 **/webapps/*/**
@@ -13,6 +9,10 @@
 
 ## Application Logs
 **/logs/*
+
+## Nginx server
+**/nginx-storage/conf/**/*
+**/nginx-storage/html/**/*
 
 ## Others
 **/.project
