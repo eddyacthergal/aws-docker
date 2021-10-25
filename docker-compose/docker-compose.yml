@@ -1,81 +1,80 @@
-version: "3"
+version: '3.6'
 
 services:
-    # Defining DB Server
-    mysql-db:
-        image: mysql:8
-        container_name: container-mysql
-        restart: always
-        command: --lower_case_table_names=0
-        security_opt:
-            - seccomp:unconfined
-        environment:
-            MYSQL_ROOT_HOST: '%'
-            MYSQL_ROOT_PASSWORD: rootPassword
-            TZ: Europe/Paris
-        volumes:
-            [
-                "/home/ec2-user/aws-docker/docker-storage/mysql-storage:/var/lib/mysql",
-            ]
-        ports:
-            - 3306:3306
+   # Defining WordPress Service
+   wordpress:
+      image: wordpress:${WORDPRESS_VERSION:-php7.3-fpm}
+      container_name: container-wordpress
+      volumes:
+         [
+            "../docker-storage/nginx-storage/html/wordpress:/var/www/html"
+         ]
+      environment:
+         - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME:-wordpress}
+         - WORDPRESS_TABLE_PREFIX=${WORDPRESS_TABLE_PREFIX:-wp_}
+         - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST:-mysql}
+         - WORDPRESS_DB_USER=${WORDPRESS_DB_USER:-root}
+         - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD:-password}
+      depends_on:
+         - mysql
+      restart: always
 
-    # Defining Nginx
-    nginx: 
-        image: nginx:latest
-        container_name: container-nginx
-        restart: always
-        volumes:
-            [
-                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/conf:/etc/nginx/conf.d",
-                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/logs:/var/log/nginx",
-                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/html:/var/www/default"
-            ]
-        ports:
-            - 80:80
-               
-    # Defining Tomcat Web Server
-    tomcat-main:
-        image: tomcat:8-jdk8
-        container_name: container-tomcat
-        restart: always
-        ports:
-            - 8080:8080
-        environment:
-            CATALINA_OPTS: "-server \
+   # Defining MySQL Service
+   mysql:
+      image: mariadb:${MARIADB_VERSION:-latest}
+      container_name: container-mysql
+      volumes:
+         [
+            "../docker-storage/mysql-storage:/var/lib/mysql"
+         ]
+      environment:
+         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-password}
+         - MYSQL_USER=${MYSQL_USER:-root}
+         - MYSQL_PASSWORD=${MYSQL_PASSWORD:-password}
+         - MYSQL_DATABASE=${MYSQL_DATABASE:-wordpress}
+      restart: always
+
+   # Defining Nginx Service
+   nginx:
+      image: nginx:${NGINX_VERSION:-latest}
+      container_name: container-nginx
+      ports:
+         - 80:80
+      volumes:
+         [
+            "../docker-storage/nginx-storage/conf:/etc/nginx/conf.d",
+            "../docker-storage/nginx-storage/logs:/var/log/nginx",
+            "../docker-storage/nginx-storage/html:/var/www/default"
+         ]
+      depends_on:
+         - wordpress
+      restart: always
+    
+   #Defining Apache tomcat
+   tomcat-main:
+      image: tomcat:8-jdk8
+      container-name: container-tomcat
+      ports:
+         - 8080:8080
+      volumes:
+         [
+            "../docker-storage/tomcat-storage/conf/Catalina/localhost:/usr/local/tomcat/conf/Catalina/localhost",
+            "../docker-storage/tomcat-storage/conf/catalina.properties:/usr/local/tomcat/conf/catalina.properties",
+            "../docker-storage/tomcat-storage/conf/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml",
+            "../docker-storage/tomcat-storage/apps-repo:/usr/local/tomcat/apps-repo",
+            "../docker-storage/tomcat-storage/webapps:/usr/local/tomcat/webapps",
+            "../docker-storage/tomcat-storage/lib-local:/usr/local/tomcat/lib-local",
+            "../docker-storage/tomcat-storage/etc:/usr/local/tomcat/etc",
+            "../docker-storage/tomcat-storage/logs:/usr/local/tomcat/logs",
+            "../docker-storage/tomcat-storage/storage:/usr/local/tomcat/storage",
+            "../docker-data:/usr/local/tomcat/data"
+         ]
+      environment:
+         CATALINA_OPTS: "-server \
               -Xms256m -Xmx1024m -XX:PermSize=256m \
               -XX:+UseG1GC \
               -XX:InitiatingHeapOccupancyPercent=70 \
               -Djava.security.auth.login.config=/usr/local/tomcat/etc/jaas.config"
-        volumes:
-            [
-                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/conf/Catalina/localhost:/usr/local/tomcat/conf/Catalina/localhost",
-                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/conf/catalina.properties:/usr/local/tomcat/conf/catalina.properties",
-                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/conf/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml",
-                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/apps-repo:/usr/local/tomcat/apps-repo",
-                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/webapps:/usr/local/tomcat/webapps",
-                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/lib-local:/usr/local/tomcat/lib-local",
-                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/etc:/usr/local/tomcat/etc",
-                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/logs:/usr/local/tomcat/logs",
-                "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/storage:/usr/local/tomcat/storage",
-                "/home/ec2-user/aws-docker/docker-data:/usr/local/tomcat/data",
-            ]
-
-    # Defining Wordpress Server
-    wordpress-main:
-        image: wordpress
-        container_name: container-wordpress
-        restart: always
-        ports:
-            - 8081:80
-        environment:
-            WORDPRESS_DB_HOST: mysql-db
-            WORDPRESS_DB_USER: wordpressRootUser
-            WORDPRESS_DB_PASSWORD: wordpressRootPassword
-            WORDPRESS_DB_NAME: wordPressDB
-        volumes:
-            [
-                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/html/wordpress:/var/www/html"
-            ]
-        depends_on:
-            - mysql-db
+      depends_on:
+         - mysql
+      restart: always
