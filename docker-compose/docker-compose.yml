@@ -6,7 +6,7 @@ services:
       image: wordpress:${WORDPRESS_VERSION:-php7.3-fpm}
       container_name: container-wordpress
       ports:
-         - 8081:80
+         - 8081:9000
       volumes:
          [
             "../docker-storage/nginx-storage/html/wordpress:/var/www/html"
