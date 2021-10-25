@@ -11,7 +11,7 @@
 **/logs/*
 
 ## Nginx server
-**/nginx-storage/conf/**
+**/nginx-storage/conf/*
 **/nginx-storage/html/**/**
 
 ## Others
