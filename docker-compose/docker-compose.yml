@@ -1,12 +1,5 @@
 version: "3"
 
-networks:
-  default:
-    ipam:
-      config:
-        - subnet: 192.168.0.0/24
-    external: false
-
 services:
     # Defining DB Server
     mysql-db:
@@ -26,9 +19,6 @@ services:
             ]
         ports:
             - 3306:3306
-        networks:
-            default:
-               ipv4_address: 192.168.0.2
 
     # Defining Nginx
     nginx: 
@@ -43,9 +33,6 @@ services:
             ]
         ports:
             - 80:80
-        networks:
-            default:
-               ipv4_address: 192.168.0.3
                
     # Defining Tomcat Web Server
     tomcat-main:
@@ -73,9 +60,6 @@ services:
                 "/home/ec2-user/aws-docker/docker-storage/tomcat-storage/storage:/usr/local/tomcat/storage",
                 "/home/ec2-user/aws-docker/docker-data:/usr/local/tomcat/data",
             ]
-        networks:
-            default:
-               ipv4_address: 192.168.0.4
 
     # Defining Wordpress Server
     wordpress-main:
@@ -85,7 +69,7 @@ services:
         ports:
             - 8081:80
         environment:
-            WORDPRESS_DB_HOST: 192.168.0.2
+            WORDPRESS_DB_HOST: mysql-db
             WORDPRESS_DB_USER: wordpressRootUser
             WORDPRESS_DB_PASSWORD: wordpressRootPassword
             WORDPRESS_DB_NAME: wordPressDB
@@ -95,6 +79,3 @@ services:
             ]
         depends_on:
             - mysql-db
-        networks:
-            default:
-               ipv4_address: 192.168.0.5
