@@ -14,5 +14,8 @@
 **/nginx-storage/conf/*
 **/nginx-storage/html/**/**
 
+## mysql server
+**/mysql-storage/**
+
 ## Others
 **/.project
