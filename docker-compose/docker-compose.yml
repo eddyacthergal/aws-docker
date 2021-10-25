@@ -53,7 +53,7 @@ services:
    #Defining Apache tomcat
    tomcat-main:
       image: tomcat:8-jdk8
-      container-name: container-tomcat
+      container_name: container-tomcat
       ports:
          - 8080:8080
       volumes:
