@@ -44,12 +44,11 @@ services:
          - 80:80
       volumes:
          [
+            "../docker-storage/nginx-storage/conf/nginx.conf:/etc/nginx/nginx.conf",
             "../docker-storage/nginx-storage/conf:/etc/nginx/conf.d",
             "../docker-storage/nginx-storage/logs:/var/log/nginx",
             "../docker-storage/nginx-storage/html:/var/www/default"
          ]
-      depends_on:
-         - wordpress
       restart: always
     
    #Defining Apache tomcat
