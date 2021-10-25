@@ -76,3 +76,25 @@ services:
         networks:
             default:
                ipv4_address: 192.168.0.4
+
+       # Defining Wordpress Server
+       wordpress:
+          image: wordpress
+          container_name: container-wordpress
+          restart: always
+          ports:
+            - 8081:80
+          environment:
+            WORDPRESS_DB_HOST: 192.168.0.2
+            WORDPRESS_DB_USER: wordpressRootUser
+            WORDPRESS_DB_PASSWORD: wordpressRootPassword
+            WORDPRESS_DB_NAME: wordPressDB
+          volumes:
+              [
+                "/home/ec2-user/aws-docker/docker-storage/nginx-storage/html/wordpress:/var/www/html"
+              ]
+          depends_on:
+             - mysql-db
+          networks:
+            default:
+               ipv4_address: 192.168.0.5
