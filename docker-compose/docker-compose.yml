@@ -42,7 +42,8 @@ services:
          - 80:80
       volumes:
          [
-            "../docker-storage/nginx-storage/*.conf:/etc/nginx/*.conf",
+            "../docker-storage/nginx-storage/nginx.conf:/etc/nginx/nginx.conf",
+            "../docker-storage/nginx-storage/restrictions.conf:/etc/nginx/restrictions.conf",
             "../docker-storage/nginx-storage/conf:/etc/nginx/conf.d",
             "../docker-storage/nginx-storage/logs:/var/log/nginx",
             "../docker-storage/nginx-storage/html:/var/www/default"
