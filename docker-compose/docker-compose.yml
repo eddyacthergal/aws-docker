@@ -72,7 +72,7 @@ services:
       
    # Defining Nginx Service
    nginx:
-      image: nginx:${NGINX_VERSION:-latest}
+      image: nginx:${NGINX_VERSION}
       container_name: container-nginx
       ports:
          - 80:80
