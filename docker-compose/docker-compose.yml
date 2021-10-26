@@ -38,18 +38,17 @@ services:
       container_name: container-mysql
       command: --lower_case_table_names=0
       security_opt:
-            - seccomp:unconfined
+         - seccomp:unconfined
       volumes:
          [
             "../docker-storage/mysql-storage:/var/lib/mysql"
          ]
       environment:
-         MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-         MYSQL_ROOT_HOST=${MYSQL_ROOT_HOST}
-         MYSQL_USER=${MYSQL_USER}
-         MYSQL_PASSWORD=${MYSQL_PASSWORD}
-         MYSQL_DATABASE=${MYSQL_DATABASE}
-         TZ: Europe/Paris
+         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+         - MYSQL_ROOT_HOST=${MYSQL_ROOT_HOST}
+         - MYSQL_USER=${MYSQL_USER}
+         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+         - MYSQL_DATABASE=${MYSQL_DATABASE}
       restart: always
       
    # Defining Nginx Service
