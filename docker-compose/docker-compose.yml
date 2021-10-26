@@ -57,7 +57,7 @@ services:
       container_name: container-wordpress
       volumes:
          [
-            "../docker-storage/nginx-storage/php/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini",
+            #"../docker-storage/nginx-storage/php/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini",
             "../docker-storage/nginx-storage/html/wordpress:/var/www/html"
          ]
       environment:
