@@ -44,12 +44,12 @@ services:
             "../docker-storage/mysql-storage:/var/lib/mysql"
          ]
       environment:
-         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-         - MYSQL_ROOT_HOST=${MYSQL_ROOT_HOST}
-         - MYSQL_USER=${MYSQL_USER}
-         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-         - MYSQL_DATABASE=${MYSQL_DATABASE}
-         - TZ: Europe/Paris
+         MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+         MYSQL_ROOT_HOST=${MYSQL_ROOT_HOST}
+         MYSQL_USER=${MYSQL_USER}
+         MYSQL_PASSWORD=${MYSQL_PASSWORD}
+         MYSQL_DATABASE=${MYSQL_DATABASE}
+         TZ: Europe/Paris
       restart: always
       
    # Defining Nginx Service
