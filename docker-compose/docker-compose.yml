@@ -34,7 +34,7 @@ services:
       
    # Defining MySQL Service
    mysql:
-      image: mysql:${MYSQL_VERSION}
+      image: ${MYSQL_TYPE}:${MYSQL_VERSION}
       container_name: container-mysql
       command: --lower_case_table_names=0
       security_opt:
