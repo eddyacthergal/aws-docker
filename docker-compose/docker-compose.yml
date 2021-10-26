@@ -50,6 +50,25 @@ services:
          - MYSQL_PASSWORD=${MYSQL_PASSWORD}
          - MYSQL_DATABASE=${MYSQL_DATABASE}
       restart: always
+   
+   #Defining PHP + WordPress
+   wordpress:
+      image: wordpress:${WORDPRESS_VERSION}
+      container_name: container-wordpress
+      volumes:
+         [
+            "../docker-storage/nginx-storage/php/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini",
+            "../docker-storage/nginx-storage/html/wordpress:/var/www/html"
+         ]
+      environment:
+         - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+         - WORDPRESS_TABLE_PREFIX=${WORDPRESS_TABLE_PREFIX}
+         - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+         - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+         - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      depends_on:
+         - mysql
+      restart: always
       
    # Defining Nginx Service
    nginx:
